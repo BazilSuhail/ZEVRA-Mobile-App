@@ -1,5 +1,4 @@
 import { getSocket, type AppSocket } from '@/lib/socket';
-import { SOCKET_EVENTS } from '@/constants';
 
 // ─── Socket Adapter ─────────────────────────────────────────────────────────
 //

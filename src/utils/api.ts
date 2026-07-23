@@ -29,7 +29,7 @@ export function getRefreshToken() {
 export function setTokens(access: string, refresh: string) {
   _accessToken = access;
   _refreshToken = refresh;
-  SecureStore.setItem(REFRESH_TOKEN_KEY, refresh).catch((e) =>
+  SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refresh).catch((e: unknown) =>
     console.warn('Failed to persist refresh token', e),
   );
 }
@@ -37,7 +37,7 @@ export function setTokens(access: string, refresh: string) {
 export function clearTokens() {
   _accessToken = null;
   _refreshToken = null;
-  SecureStore.deleteItem(REFRESH_TOKEN_KEY).catch(() => {});
+  SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY).catch(() => {});
 }
 
 /** Sync — in-memory refresh token (call after hydrateTokens at boot). */
@@ -48,7 +48,7 @@ export function loadRefreshToken() {
 /** Async — load refresh token from SecureStore into memory. Call once at app boot. */
 export async function hydrateTokens(): Promise<string | null> {
   try {
-    const stored = await SecureStore.getItem(REFRESH_TOKEN_KEY);
+    const stored = await SecureStore.getItemAsync(REFRESH_TOKEN_KEY);
     if (stored) _refreshToken = stored;
   } catch (e) {
     console.warn('Failed to load refresh token', e);
@@ -79,10 +79,10 @@ http.interceptors.request.use(
 // ─── Response Interceptor: auto-refresh on 401 ─────────────────────────────
 
 let isRefreshing = false;
-let failedQueue: Array<{
+let failedQueue: {
   resolve: (token: string) => void;
   reject: (error: unknown) => void;
-}> = [];
+}[] = [];
 
 function processQueue(error: unknown, token: string | null) {
   failedQueue.forEach((p) => (error || !token ? p.reject(error) : p.resolve(token)));
@@ -128,7 +128,8 @@ http.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError, null);
         clearTokens();
-        router.replace('/(auth)/login');
+        // Typed routes only know existing files — route exists after Phase 3
+        router.replace('/(auth)/login' as never);
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

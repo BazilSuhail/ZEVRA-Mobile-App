@@ -1,6 +1,5 @@
 import { io, Socket } from 'socket.io-client';
 import { API_URL, APP, SOCKET_EVENTS } from '@/constants';
-import { getAccessToken } from '@/utils/api';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
