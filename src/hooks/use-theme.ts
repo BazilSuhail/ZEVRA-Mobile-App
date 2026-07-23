@@ -12,7 +12,7 @@ export function useTheme() {
   const [isReady, setIsReady] = useState(false);
   const [savedTheme, setSavedTheme] = useState<ThemeName | null>(null);
 
-  // Load saved theme on mount
+  // Load saved theme on mount — dark-first like the web app (zevra-client)
   useEffect(() => {
     (async () => {
       try {
@@ -20,9 +20,15 @@ export function useTheme() {
         if (stored === 'light' || stored === 'dark' || stored === 'system') {
           Uniwind.setTheme(stored);
           setSavedTheme(stored);
+        } else {
+          // First launch: default to dark (web app is dark-first)
+          Uniwind.setTheme('dark');
+          setSavedTheme('dark');
         }
       } catch (e) {
         console.warn('Failed to load theme', e);
+        Uniwind.setTheme('dark');
+        setSavedTheme('dark');
       } finally {
         setIsReady(true);
       }

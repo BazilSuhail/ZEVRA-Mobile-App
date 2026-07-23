@@ -1,12 +1,163 @@
+/* Required: Import Tailwind CSS */
 @import 'tailwindcss';
+
+/* Required: Import Uniwind */
 @import 'uniwind';
 
+/* ─── Fonts (used on web; native uses platform fonts) ─────────────────────── */
 :root {
   --font-display:
     Spline Sans, Inter, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji,
     Segoe UI Symbol, Noto Color Emoji;
   --font-mono:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
-  --font-rounded: 'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif;
+  --font-rounded: 'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothi', sans-serif;
   --font-serif: Georgia, 'Times New Roman', serif;
+}
+
+/* ─── Zevra Design Tokens (ported from zevra-client/app/globals.css) ──────── */
+/* Dark mode first — matches the web app's :root dark defaults.                */
+
+@layer theme {
+  :root {
+    /* Dark theme (default) */
+    @variant dark {
+      /* Backgrounds */
+      --color-bg-primary: #07050a;
+      --color-bg-secondary: #0f0c1b;
+      --color-bg-surface: #18142a;
+      --color-bg-card: #130f23;
+      --color-bg-inset: #0a0812;
+      --color-bg-input: rgba(19, 15, 35, 0.75);
+
+      /* Text */
+      --color-text-primary: #fafafa;
+      --color-text-secondary: #c084fc;
+      --color-text-muted: #a1a1aa;
+      --color-text-white: #ffffff;
+      --color-text-body: rgba(228, 228, 231, 0.8);
+      --color-text-label: rgba(192, 132, 252, 0.9);
+
+      /* Brand — Purple (primary) */
+      --color-brand: #7c3aed;
+      --color-brand-hover: #6d28d9;
+      --color-brand-light: #a78bfa;
+
+      /* Accent — Indigo */
+      --color-accent: #6366f1;
+      --color-accent-hover: #4f46e5;
+      --color-accent-light: #818cf8;
+
+      /* Purple Scale */
+      --color-purple-300: #c084fc;
+      --color-purple-400: #a855f7;
+      --color-purple-500: #a855f7;
+      --color-purple-600: #9333ea;
+      --color-purple-900: rgba(88, 28, 135, 0.3);
+      --color-purple-950: rgba(59, 7, 100, 0.6);
+
+      /* Indigo Scale */
+      --color-indigo-600: #4f46e5;
+
+      /* Message Bubbles */
+      --color-bubble-sent: #7c3aed;
+      --color-bubble-received: #18142a;
+
+      /* Borders */
+      --color-border: rgba(63, 63, 70, 0.6);
+      --color-border-purple: rgba(168, 85, 247, 0.3);
+      --color-border-purple-focus: #a855f7;
+
+      /* Glows */
+      --color-glow-purple: rgba(147, 51, 234, 0.15);
+      --color-glow-indigo: rgba(79, 70, 229, 0.3);
+      --color-glow-center: rgba(59, 7, 100, 0.2);
+
+      /* Dot Grid */
+      --color-dot-color: rgba(147, 51, 234, 0.35);
+    }
+
+    /* Light theme overrides */
+    @variant light {
+      /* Backgrounds */
+      --color-bg-primary: #f8f7fc;
+      --color-bg-secondary: #f1f0f7;
+      --color-bg-surface: #ffffff;
+      --color-bg-card: #f4f3f9;
+      --color-bg-inset: #e6e4f0;
+      --color-bg-input: rgba(255, 255, 255, 0.85);
+
+      /* Text */
+      --color-text-primary: #18181b;
+      --color-text-secondary: #7c3aed;
+      --color-text-muted: #71717a;
+      --color-text-white: #ffffff;
+      --color-text-body: rgba(63, 63, 70, 0.8);
+      --color-text-label: rgba(124, 58, 237, 0.9);
+
+      /* Brand / Accent stay the same across themes */
+      --color-brand: #7c3aed;
+      --color-brand-hover: #6d28d9;
+      --color-brand-light: #a78bfa;
+      --color-accent: #6366f1;
+      --color-accent-hover: #4f46e5;
+      --color-accent-light: #818cf8;
+
+      /* Purple Scale */
+      --color-purple-300: #c084fc;
+      --color-purple-400: #a855f7;
+      --color-purple-500: #a855f7;
+      --color-purple-600: #9333ea;
+      --color-purple-900: rgba(124, 58, 237, 0.1);
+      --color-purple-950: rgba(124, 58, 237, 0.15);
+
+      /* Indigo Scale */
+      --color-indigo-600: #4f46e5;
+
+      /* Message Bubbles */
+      --color-bubble-sent: #7c3aed;
+      --color-bubble-received: #f4f4f5;
+
+      /* Borders */
+      --color-border: rgba(228, 228, 231, 0.8);
+      --color-border-purple: rgba(124, 58, 237, 0.3);
+      --color-border-purple-focus: #7c3aed;
+
+      /* Glows */
+      --color-glow-purple: rgba(124, 58, 237, 0.08);
+      --color-glow-indigo: rgba(99, 102, 241, 0.08);
+      --color-glow-center: rgba(124, 58, 237, 0.05);
+
+      /* Dot Grid */
+      --color-dot-color: rgba(124, 58, 237, 0.15);
+    }
+  }
+}
+
+/* ─── Neumorphic surfaces (gradients render on web; borders apply on native) ─ */
+@layer components {
+  .neumorphic-card-dark {
+    background: linear-gradient(135deg, rgba(26, 19, 61, 0.5) 0%, rgba(12, 9, 31, 0.75) 100%);
+    border-top: 1px solid rgba(167, 139, 250, 0.28);
+    border-left: 1px solid rgba(167, 139, 250, 0.22);
+    border-right: 1px solid rgba(49, 16, 117, 0.65);
+    border-bottom: 1px solid rgba(49, 16, 117, 0.85);
+    backdrop-filter: blur(16px);
+  }
+
+  .neumorphic-inset-dark {
+    background: linear-gradient(135deg, rgba(8, 6, 20, 0.85) 0%, rgba(16, 12, 40, 0.65) 100%);
+    border-top: 1px solid rgba(20, 14, 48, 0.95);
+    border-left: 1px solid rgba(20, 14, 48, 0.85);
+    border-right: 1px solid rgba(129, 140, 248, 0.22);
+    border-bottom: 1px solid rgba(129, 140, 248, 0.28);
+  }
+
+  .neumorphic-button-dark {
+    background: linear-gradient(135deg, #6366f1 0%, #7c3aed 50%, #4c1d95 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.35);
+    border-left: 1px solid rgba(255, 255, 255, 0.25);
+    border-right: 1px solid rgba(30, 10, 56, 0.7);
+    border-bottom: 1px solid rgba(30, 10, 56, 0.9);
+  }
 }
